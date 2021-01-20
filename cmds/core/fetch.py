@@ -171,6 +171,45 @@ def getFromBgpView(search):
 		assets[i].id=i
 	return assets
 
-def exploreASN(link,cookies,ASN):
-	pass
-
+def exploreASN4(ASN_name):
+	"""
+	Returns the ipv4 prefixes included in the AS under a list format
+	"""
+	ipv4s=[]
+	r=requests.get("https://bgpview.io/asn/"+ASN_name[2:])
+	text=r.text
+	match=re.search(r"id=\"table-prefixes-v4\"[\w\W\s]*?</div>",text)
+	
+	if match is None:
+		return []
+		
+	text=text[match.start():match.end()]
+	lignes=re.findall("<tr>[\w\W\s]*?</tr>",text)
+	
+	for line in lignes[1:]: #discard the title
+		match=re.search("((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/[0-9]{2}",line)
+		ipv4s.append(line[match.start():match.end()])
+	
+	return ipv4s
+	
+def exploreASN6(ASN_name):
+	"""
+	Returns the ipv6 prefixes included in the AS under a list format
+	"""
+	ipv6s=[]
+	r=requests.get("https://bgpview.io/asn/"+ASN_name[2:])
+	text=r.text
+	match=re.search(r"id=\"table-prefixes-v6\"[\w\W\s]*?</div>",text)
+	
+	if match is None:
+		return []
+		
+	text=text[match.start():match.end()]
+	lignes=re.findall("<tr>[\w\W\s]*?</tr>",text)
+	
+	for line in lignes[1:]: #discard the title
+		match=re.search("(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/[0-9]{2}",line)
+		ipv6s.append(line[match.start():match.end()])
+	
+	return ipv6s
+	

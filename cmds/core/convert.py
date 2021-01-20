@@ -1,5 +1,5 @@
 import requests, re
-import cmds.core.rasset as rasset
+import cmds.core.rasset as rasset,cmds.core.fetch as fetch
 
 def toRanges(rassets):
 	"""
@@ -13,12 +13,13 @@ def toRanges(rassets):
 	for asset in rassets:
 		if asset.nature=="{:<6}".format("ASN"):
 			asn.append(asset.real_name)
+			ip4s.extend(fetch.exploreASN4(asset.real_name))
 		elif asset.nature=="{:<6}".format("IPv4"):
 			ip4s.append(asset.real_name)
 		elif asset.nature=="{:<6}".format("IPv6"):
 			ip6s.append(asset.real_name)
-	ip4s=list(set(ip4s))
-	ip6s=list(set(ip6s))
+	ip4s=reduce_ip4s(ip4s)
+	ip6s=reduce_ip6s(ip6s)
 	return (ip4s,ip6s,asn)
 
 def strTolist(ip4s):
@@ -61,11 +62,11 @@ def reduce_ip4s(ip4s):
 	"""
 	Removes duplicates and subnets
 	"""
-	ip4s=sorted(strTolist(ip4s))
+	ip4s=sorted(strTolist(ip4s)) #sort by mask length
 	result=[]
 	for (mask,bits) in ip4s:
 		cond=True
-		for (ref_mask,ref_bits_ip) in result:
+		for (ref_mask,ref_bits_ip) in result: #test if subnet, guaranteed by th previous sorting
 			and_cond=True
 			for i in range(ref_mask):
 				and_cond=and_cond and (ref_bits_ip[i]==bits[i])
@@ -73,4 +74,10 @@ def reduce_ip4s(ip4s):
 		if cond:
 			result.append((mask,bits))
 	return listTostr(result)
+
+def reduce_ip6s(ip6s):
+	"""
+	Removes duplicates
+	"""
+	return list(set(ip6s))
 

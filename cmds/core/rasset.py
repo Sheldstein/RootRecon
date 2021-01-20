@@ -48,13 +48,16 @@ def save_rassets(rassets,directory):
 	
 	### Writing ip ranges in saved directory
 	ip4s,ip6s,asn=convert.toRanges(rassets)
-	ip4s=convert.reduce_ip4s(ip4s)
 	f=open(directory+'/ipv4.txt',"w")
 	for ip in ip4s:
 		f.write(ip+'\n')
 	f.close()
 	f=open(directory+'/ipv6.txt',"w")
 	for ip in ip6s:
+		f.write(ip+'\n')
+	f.close()
+	f=open(directory+'/asn.txt',"w")
+	for ip in asn:
 		f.write(ip+'\n')
 	f.close()
 	print('Successfully saved data')

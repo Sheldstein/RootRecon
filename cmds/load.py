@@ -1,4 +1,4 @@
-import getopt
+import getopt,os
 import cmds.core.rasset as rasset
 
 help_load="""
@@ -35,3 +35,4 @@ def load(re_com,current_rassets):
 			return 1,current_rassets
 	current_rassets=rasset.load_rassets(dir)
 	rasset.display_rassets(current_rassets)
+	return 1,current_rassets
