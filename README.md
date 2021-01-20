@@ -15,8 +15,8 @@ Launch the console with :
 `python3 RootRecon.py`
 
 Some useful commands :
-`get -s cie_name` : Searches ASN belonging to cie
-`get -s cie_name -d save_directory` : Searches ASN belonging to cie and save it to save_directory
+...`get -s cie_name` : Searches ASN belonging to cie 
+...`get -s cie_name -d save_directory` : Searches ASN belonging to cie and save it to save_directory
 
 Default mode is using the build-in console, but you can also pass a get command as arguments for your automation, which does not start the console:
 `python3 RootRecon.py get -s cie_name -d save_directory`
