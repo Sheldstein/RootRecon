@@ -4,6 +4,8 @@ A more practical way to manage AS and IP prefixes while doing ASN Recon
 # Disclaimer
 This tool is made for responsible use only, the developpers reject any responsability regarding its use.
 
+This tool is still under development, so you can expect some bugs. Please share them to allow us to improve it.
+
 # Installation
 1. Clone this repositery : `git clone https://github.com/Sheldstein/RootRecon.git`
 2. Install requirements : `pip3 install -f requirements.txt`
