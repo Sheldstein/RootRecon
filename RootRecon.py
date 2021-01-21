@@ -19,11 +19,41 @@ current_rassets=[]
 cookie_bgpNet_session=None
 cookie_bgpNet_c=None
 
+def toCommand(command):
+	command=command.lstrip()
+	start=0
+	end=0
+	n=len(command)
+	quote=-1
+	re_com=[]
+	
+	while end < n:
+		if command[end]==' ' and quote==-1:
+			if start!=end:
+				re_com.append(command[start:end])
+			start=end+1
+		elif command[end]=='\"' and quote == -1:
+			quote=end
+		elif command[end]=='\"' and quote!=-1:
+			if start==quote and quote+1==end :
+				print("Unexpected \"\" element")
+				return []
+			re_com.append(command[start:quote]+command[quote+1:end])
+			start=end+1
+			quote=-1
+		end+=1
+	if start != n:
+		re_com.append(command[start:])
+	if quote!=-1:
+		print("Pay attention to your quotes")
+		return []
+	return re_com
+
 def menu():
 	global current_rassets,cookie_bgpNet_session,cookie_bgpNet_c
 	print('>>>',end='')
 	command=input()
-	re_com=re.findall(r'[a-zA-Z0-9-/._,]+',command) #reads the command
+	re_com=toCommand(command)
 	if len(re_com)>0:
 		
 		######  GET  ######

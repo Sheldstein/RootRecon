@@ -5,8 +5,8 @@ help_rm="""
 rm -h : displays this help
 rm [-i ids] [-c countries] [-n countries] [-t type]: removes assets from current data. Editions are not automatically saved
 	-i : Followed by a comma-separated list of ids/ranges (like n-m)
-	-c : Followed by a comma-separated list of countries that you remove ( if there is a space in a country, use a '_' )
-	-n : Followed by a space-separated list of countries that you keep ( if there is a space in a country, use a '_' )
+	-c : Followed by a comma-separated list of countries that you remove ( if there is a space in a country, use double quotes )
+	-n : Followed by a space-separated list of countries that you keep ( if there is a space in a country, use double quotes )
 	-t : Followed by a comma-separated list of types of assets that you remove (ASN, IPv4, etc)
 """
 
@@ -39,7 +39,7 @@ def rm(re_com,current_rassets):
 				return 1,current_rassets
 	if '-c' in options:
 		for elem in options['-c']:
-			c.append('{:<24}'.format(elem).replace("_"," "))
+			c.append('{:<24}'.format(elem))
 	if '-n' in options:
 		for elem in options['-n']:
 			nc.append('{:<24}'.format(elem).replace("_"," "))
